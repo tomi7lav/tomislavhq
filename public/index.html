@@ -3,56 +3,143 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tomislav HQ</title>
+    <title>Tomislav Tomcic — Software Engineer</title>
     <meta
       name="description"
-      content="Tomislav's personal website built with Node.js."
+      content="Personal site of Tomislav Tomcic: engineering notes on backend systems, architecture decisions, and practical software building."
     />
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <header class="container">
-      <p class="eyebrow">Tomislav HQ</p>
-      <h1>Hello, I'm Tomislav Tomcic.</h1>
-      <p class="intro">
-        I build software, ship projects, and share what I learn.
-      </p>
-      <a class="btn" href="mailto:hello@tomislavhq.com">Contact me</a>
-    </header>
+    <div class="site-shell">
+      <header class="site-header">
+        <nav class="container site-nav">
+          <a href="/" class="brand"
+            >tomislav<span class="brand-dot">.</span>hq</a
+          >
+          <div class="nav-links">
+            <a href="/" class="active">Home</a>
+            <a href="/articles">Articles</a>
+          </div>
+        </nav>
+      </header>
 
-    <main class="container grid">
-      <section class="card">
-        <h2>About</h2>
-        <p>
-          This is my personal corner of the internet where I share projects and
-          experiments.
-        </p>
-      </section>
-      <section class="card">
-        <h2>Now</h2>
-        <p>
-          Currently focused on backend engineering with Go and Node.js, plus
-          practical AI tooling.
-        </p>
-      </section>
-      <section class="card">
-        <h2>Links</h2>
-        <ul>
-          <li><a href="https://github.com/tomi7lav">GitHub</a></li>
-          <li>
+      <main class="container">
+        <section id="home" class="home-section">
+          <div class="availability">
+            <span class="availability-dot" aria-hidden="true"></span>
+            Available for select consulting
+          </div>
+
+          <h1 class="hero-title">
+            Hi, I&apos;m Tomislav Tomcic — a software engineer crafting reliable
+            products for
+            <span class="hero-highlight">over a decade</span>.
+          </h1>
+
+          <p class="hero-copy">
+            I build backend systems, document implementation tradeoffs, and
+            publish practical notes from real projects. This site is where I
+            share architecture lessons and engineering decisions in the open.
+          </p>
+
+          <div class="cta-row">
+            <a href="/articles" class="button button-primary"
+              >Read my articles -></a
+            >
+            <a
+              href="mailto:hello@tomislavhq.com"
+              class="button button-secondary"
+              >Get in touch</a
+            >
+            <div class="social-links">
+              <a href="https://github.com/tomi7lav">GitHub</a>
+              <a href="https://www.linkedin.com/in/tomislav-tomcic-8b58544a/"
+                >LinkedIn</a
+              >
+              <a href="https://x.com/tomi7lav">X</a>
+            </div>
+          </div>
+
+          <div class="stats">
+            <div>
+              <p class="stats-value">10+</p>
+              <p class="stats-label">Years building</p>
+            </div>
+          </div>
+
+          <div class="stack">
+            <p class="stack-title">Tools I reach for</p>
+            <ul class="stack-list">
+              <li>TypeScript</li>
+              <li>Node.js</li>
+              <li>Go</li>
+              <li>PostgreSQL</li>
+              <li>AWS</li>
+              <li>Docker</li>
+              <li>Kubernetes</li>
+              <li>Redis</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="articles" class="articles-section">
+          <div>
+            <h2 class="section-title">Articles</h2>
+            <p class="section-copy">
+              Notes on engineering, architecture, and building durable systems -
+              written from implementation trenches.
+            </p>
+          </div>
+          <div id="featured-articles" class="cards-grid"></div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <div class="container site-footer-inner">
+          <p>© <span id="year"></span> Tomislav Tomcic. Built with care.</p>
+          <div class="footer-links">
+            <a href="https://github.com/tomi7lav">GitHub</a>
             <a href="https://www.linkedin.com/in/tomislav-tomcic-8b58544a/"
               >LinkedIn</a
             >
-          </li>
-          <li><a href="https://x.com/tomi7lav">X</a></li>
-        </ul>
-      </section>
-    </main>
+            <a href="https://x.com/tomi7lav">X</a>
+          </div>
+        </div>
+      </footer>
+    </div>
 
-    <footer class="container footer">
-      <p>© <span id="year"></span> Tomislav. Built with Node.js.</p>
-    </footer>
+    <script>
+      async function renderFeaturedArticles() {
+        const container = document.getElementById("featured-articles");
+        if (!container) return;
 
-    <script src="/script.js"></script>
+        try {
+          const response = await fetch("/api/articles");
+          if (!response.ok) throw new Error("Failed to fetch articles");
+          const articles = await response.json();
+          const featured = articles.slice(0, 4);
+
+          container.innerHTML = featured
+            .map(
+              (article) => `
+                <a href="/articles/${article.slug}" class="article-card">
+                  <p class="article-meta">${article.publishedAt} · ${article.readTime}</p>
+                  <h3 class="article-title">${article.title}</h3>
+                  <p class="article-summary">${article.summary}</p>
+                  <span class="article-link">Read article -></span>
+                </a>
+              `,
+            )
+            .join("");
+        } catch (error) {
+          container.innerHTML = `<p class="section-copy">Could not load articles right now.</p>`;
+        }
+      }
+
+      const yearEl = document.getElementById("year");
+      if (yearEl) yearEl.textContent = new Date().getFullYear().toString();
+      renderFeaturedArticles();
+    </script>
   </body>
 </html>

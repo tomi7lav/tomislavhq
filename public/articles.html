@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Articles | Tomislav HQ</title>
+    <meta
+      name="description"
+      content="All articles by Tomislav Tomcic on software engineering, backend systems, and practical architecture."
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <nav class="container site-nav">
+          <a href="/" class="brand">tomislav<span class="brand-dot">.</span>hq</a>
+          <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/articles" class="active">Articles</a>
+          </div>
+        </nav>
+      </header>
+
+      <main class="container article-main">
+        <section class="archive-hero">
+          <p class="eyebrow">Articles</p>
+          <h1 class="hero-title" style="max-width: 16ch; margin-top: 1rem">Writing archive</h1>
+          <p class="hero-copy">
+            Long-form notes on software architecture, backend engineering, and what I learn while building.
+          </p>
+        </section>
+
+        <section class="articles-section" style="padding-top: 2rem">
+          <div id="articles-list" class="cards-grid"></div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <div class="container site-footer-inner">
+          <p>© <span id="year"></span> Tomislav Tomcic. Built with care.</p>
+          <div class="footer-links">
+            <a href="https://github.com/tomi7lav">GitHub</a>
+            <a href="https://www.linkedin.com/in/tomislav-tomcic-8b58544a/">LinkedIn</a>
+            <a href="https://x.com/tomi7lav">X</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      async function renderArticles() {
+        const container = document.getElementById("articles-list");
+        if (!container) return;
+
+        try {
+          const response = await fetch("/api/articles");
+          if (!response.ok) throw new Error("Failed to fetch articles");
+          const articles = await response.json();
+
+          container.innerHTML = articles
+            .map(
+              (article) => `
+                <a href="/articles/${article.slug}" class="article-card">
+                  <p class="article-meta">${article.publishedAt} · ${article.readTime}</p>
+                  <h2 class="article-title">${article.title}</h2>
+                  <p class="article-summary">${article.summary}</p>
+                  <span class="article-link">Read article -></span>
+                </a>
+              `,
+            )
+            .join("");
+        } catch (error) {
+          container.innerHTML = `<p class="section-copy">Could not load articles right now.</p>`;
+        }
+      }
+
+      const yearEl = document.getElementById("year");
+      if (yearEl) yearEl.textContent = new Date().getFullYear().toString();
+      renderArticles();
+    </script>
+  </body>
+</html>
