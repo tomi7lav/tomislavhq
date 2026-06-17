@@ -87,11 +87,9 @@
           <div>
             <h2 class="section-title">Articles</h2>
             <p class="section-copy">
-              Notes on engineering, architecture, and building durable systems -
-              written from implementation trenches.
+              I&apos;m preparing my first articles. They&apos;ll be published here soon.
             </p>
           </div>
-          <div id="featured-articles" class="cards-grid"></div>
         </section>
       </main>
 
@@ -110,36 +108,8 @@
     </div>
 
     <script>
-      async function renderFeaturedArticles() {
-        const container = document.getElementById("featured-articles");
-        if (!container) return;
-
-        try {
-          const response = await fetch("/api/articles");
-          if (!response.ok) throw new Error("Failed to fetch articles");
-          const articles = await response.json();
-          const featured = articles.slice(0, 4);
-
-          container.innerHTML = featured
-            .map(
-              (article) => `
-                <a href="/articles/${article.slug}" class="article-card">
-                  <p class="article-meta">${article.publishedAt} · ${article.readTime}</p>
-                  <h3 class="article-title">${article.title}</h3>
-                  <p class="article-summary">${article.summary}</p>
-                  <span class="article-link">Read article -></span>
-                </a>
-              `,
-            )
-            .join("");
-        } catch (error) {
-          container.innerHTML = `<p class="section-copy">Could not load articles right now.</p>`;
-        }
-      }
-
       const yearEl = document.getElementById("year");
       if (yearEl) yearEl.textContent = new Date().getFullYear().toString();
-      renderFeaturedArticles();
     </script>
   </body>
 </html>
