@@ -98,6 +98,13 @@ a {
   padding-bottom: 5rem;
 }
 
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 290px;
+  gap: 2rem;
+  align-items: start;
+}
+
 .availability {
   display: inline-flex;
   align-items: center;
@@ -193,6 +200,23 @@ a {
 
 .social-links a:hover {
   color: var(--foreground);
+}
+
+.profile-card {
+  margin-top: 0.4rem;
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  background: var(--card);
+  padding: 0.7rem;
+}
+
+.profile-image {
+  width: 100%;
+  display: block;
+  border-radius: 0.75rem;
+  object-fit: cover;
+  aspect-ratio: 1 / 1;
+  filter: grayscale(100%);
 }
 
 .stats {
@@ -418,6 +442,14 @@ a {
 @media (max-width: 900px) {
   .home-section {
     padding-top: 4rem;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-card {
+    width: min(340px, 100%);
   }
 
   .cards-grid,

@@ -4,7 +4,8 @@ const fastifyStatic = require("@fastify/static");
 
 const PORT = process.env.PORT || 3000;
 const HOST =
-  process.env.HOST || (process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1");
+  process.env.HOST ||
+  (process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1");
 const PUBLIC_DIR = path.join(__dirname, "public");
 const app = fastify({
   logger: process.env.NODE_ENV === "development",
