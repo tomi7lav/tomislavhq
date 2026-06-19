@@ -467,7 +467,7 @@ a {
   font-weight: 600;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .home-section {
     padding-top: 4rem;
   }
